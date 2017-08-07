@@ -1,4 +1,5 @@
 import sys, re, os
+from typing import List, Set
 
 regex = re.compile(r'<(.*)>')
 OPENSCADPATH = os.environ['OPENSCADPATH']
@@ -14,15 +15,15 @@ library_declation = '''
 
 '''
 
-def included_scads_in(scad):
+def included_scads_in(scad: str) -> Set[str]:
     with open(scad) as src:
         return {
             os.path.join(OPENSCADPATH, regex.findall(line)[0])
                 for line in src if line.startswith('include')
         }
 
-def all_scads_from(main_scad):
-    def dig_all_scads(undug_scads):
+def all_scads_from(main_scad: str) -> Set[str]:
+    def dig_all_scads(undug_scads: Set[str]) -> Set[str]:
         if not undug_scads:
             return set()
         else:
@@ -35,11 +36,11 @@ def all_scads_from(main_scad):
     scads_in_main = included_scads_in(main_scad)
     return {scad for scad in dig_all_scads(scads_in_main)}
 
-def code_in(scad):
+def code_in(scad: str) -> List[str]:
     with open(scad) as f:
         return [line for line in f if not line.startswith('include')]
 
-def inliner(src_scad, dest_scad):
+def inliner(src_scad: str, dest_scad: str) -> None:
     with open(dest_scad, mode = 'w') as f:
         f.writelines(code_in(src_scad))
         f.write(library_declation)
@@ -48,10 +49,10 @@ def inliner(src_scad, dest_scad):
             f.writelines(code_in(scad))
             f.write('\n\n')   
 
-def main():
+def main() -> None:
     try:
-        src_scad = sys.argv[1]
-        dest_scad = sys.argv[2]
+        src_scad = sys.argv[1]  
+        dest_scad = sys.argv[2] 
         inliner(src_scad, dest_scad)
     except IndexError:
         print('Usage:\n\tpython inline.py src.scad dest.scad')
