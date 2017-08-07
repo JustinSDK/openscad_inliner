@@ -1,8 +1,8 @@
 import sys, re, os
-from typing import List, Set
+from typing import List, Set, Pattern
 
-regex = re.compile(r'<(.*)>')
-OPENSCADPATH = os.environ['OPENSCADPATH']
+regex = re.compile(r'<(.*)>')             # type: Pattern[str]
+OPENSCADPATH = os.environ['OPENSCADPATH'] # type: str
 library_declation = '''
     
 /**
