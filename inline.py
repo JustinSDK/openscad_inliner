@@ -1,11 +1,14 @@
-import sys, scad
+import sys, argparse 
+import scad
 
 def main() -> None:
-    try:
-        src_scad = sys.argv[1]  
-        dest_scad = sys.argv[2] 
-        scad.inliner(src_scad, dest_scad)
-    except IndexError:
-        print('Usage:\n\tpython inline.py src.scad dest.scad')
+    parser = argparse.ArgumentParser()
+    parser.add_argument("src", help="the source scad")
+    parser.add_argument("dest", help="the destination scad")
+
+    if(len(sys.argv) == 1):
+        parser.print_help()
+    else:
+        scad.inliner(args.src, args.dest)
 
 main()
