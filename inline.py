@@ -11,9 +11,9 @@ def do_inline(src, dest, scad_paths):
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("src", help="The source")
-    parser.add_argument("dest", help="The destination")
-    parser.add_argument("-op", "--openscadpath", help="Specify where to find user scad files")
+    parser.add_argument("src", help="the source")
+    parser.add_argument("dest", help="the destination")
+    parser.add_argument("-op", "--openscadpath", help="specify where to find user scad files")
 
     if(len(sys.argv) == 1):
         parser.print_help()
