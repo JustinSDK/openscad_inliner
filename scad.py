@@ -16,7 +16,7 @@ library_declation = '''
 
 def scad_file_fullname(scad_paths: List[str], scad_name: str) -> str:
     for path in scad_paths:
-        f = os.path.join(path, scad_name).replace('../', '')
+        f = os.path.join(path, scad_name)
         if os.path.isfile(f):
             return f
 
