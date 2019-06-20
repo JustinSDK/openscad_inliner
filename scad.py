@@ -16,7 +16,7 @@ library_declation = '''
 
 def scad_file_fullname(scad_paths: List[str], scad_name: str) -> str:
     for path in scad_paths:
-        f = os.path.join(path, scad_name)
+        f = os.path.join(path, scad_name).replace('../', '')
         if os.path.isfile(f):
             return f
 
@@ -58,7 +58,6 @@ def inliner(src_scad: str, dest_scad: str, scad_paths: List[str] = None) -> None
     with open(dest_scad, mode = 'w') as f:
         f.writelines(code_in(src_scad))
         f.write(library_declation)
-
         for scad in all_scads_from(src_scad, scad_paths):
             f.writelines(code_in(scad))
             f.write('\n\n')   
