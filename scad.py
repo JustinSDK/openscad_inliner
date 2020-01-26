@@ -27,7 +27,7 @@ def included_scads_in(scad: str, scad_paths: List[str] = None) -> Set[str]:
     with open(scad) as src:
         scads = {
             regex.findall(line)[0]
-                for line in src if line.startswith('include')
+                for line in src if (line.startswith('include') or line.startswith('use'))
         }
 
     if scad_paths:
@@ -52,7 +52,7 @@ def all_scads_from(main_scad: str, scad_paths: List[str] = None) -> Set[str]:
 
 def code_in(scad: str) -> List[str]:
     with open(scad) as f:
-        return [line for line in f if not line.startswith('include')]
+        return [line for line in f if not (line.startswith('include') or line.startswith('use'))]
 
 def inliner(src_scad: str, dest_scad: str, scad_paths: List[str] = None) -> None:
     with open(dest_scad, mode = 'w') as f:
