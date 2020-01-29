@@ -22,7 +22,7 @@ def scad_file_fullname(scad_paths: List[str], scad_name: str) -> str:
 
     raise FileNotFoundError('scad not found: {}'.format(scad_name))
 
-def included_scads_in(scad: str, scad_paths: List[str] = None) -> Set[str]:
+def used_or_included_scads_in(scad: str, scad_paths: List[str] = None) -> Set[str]:
     scads = None
     with open(scad) as src:
         scads = {
@@ -42,11 +42,11 @@ def all_scads_from(main_scad: str, scad_paths: List[str] = None) -> Set[str]:
         else:
             sub_scads = {
                     sub_scad for undug_scad in undug_scads
-                        for sub_scad in included_scads_in(undug_scad, scad_paths)
+                        for sub_scad in used_or_included_scads_in(undug_scad, scad_paths)
             }
             return undug_scads | dig_all_scads(sub_scads - undug_scads)
 
-    scads_in_main = included_scads_in(main_scad, scad_paths)
+    scads_in_main = used_or_included_scads_in(main_scad, scad_paths)
     
     return {scad for scad in dig_all_scads(scads_in_main)}
 
